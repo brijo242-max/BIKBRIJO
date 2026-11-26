@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Brijo BIKONDI — Carte de Visite Numérique</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Police Inter & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet" />
+  <!-- Font Awesome pour les icônes -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Plus Jakarta Sans', 'sans-serif'],
+          },
+          colors: {
+            navy: '#0B132B',
+            cardDark: '#111827',
+            cardSlate: '#1E293B',
+            gold: '#F59E0B',
+            emeraldBrand: '#10B981',
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    body {
+      background-color: #0B132B;
+      background-image:
+        radial-gradient(circle at 15% 15%, rgba(245, 158, 11, 0.12), transparent 40%),
+        radial-gradient(circle at 85% 80%, rgba(16, 185, 129, 0.10), transparent 45%);
+      min-height: 100vh;
+    }
+    .glass-card {
+      background: rgba(17, 24, 39, 0.88);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .link-tile {
+      background: #1E293B;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      transition: all 0.22s ease;
+    }
+    .link-tile:hover {
+      transform: translateY(-2px);
+      border-color: rgba(245, 158, 11, 0.45);
+      background: #243247;
+    }
+    .avatar-ring {
+      background: linear-gradient(135deg, #F59E0B 0%, #10B981 100%);
+      padding: 3px;
+    }
+  </style>
+</head>
+<body class="text-slate-100 antialiased selection:bg-amber-500/30 selection:text-amber-200 flex items-center justify-center p-3 sm:p-6">
+
+  <!-- Conteneur Principal Mobile-First -->
+  <main class="w-full max-w-md mx-auto glass-card rounded-3xl shadow-2xl overflow-hidden my-2">
+    
+    <!-- Bannière supérieure décorative -->
+    <div class="relative h-28 bg-gradient-to-r from-slate-900 via-[#132247] to-slate-900 border-b border-white/10">
+      <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(#F59E0B 1px, transparent 1px); background-size: 16px 16px;"></div>
+      
+      <!-- Bouton Partager / QR Code en haut à droite -->
+      <button
+        type="button"
+        id="openQrBtn"
+        aria-label="Partager et afficher le QR Code"
+        class="absolute top-3.5 right-3.5 px-3 py-2 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-amber-400 border border-amber-500/30 text-xs font-semibold flex items-center gap-1.5 shadow-lg transition cursor-pointer"
+      >
+        <i class="fa-solid fa-qrcode"></i>
+        <span>QR &amp; Partager</span>
+      </button>
+
+      <!-- Badge Statut -->
+      <div class="absolute top-3.5 left-3.5 px-3 py-1.5 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-xs font-medium flex items-center gap-1.5">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span>Disponible • Conseil &amp; Missions</span>
+      </div>
+    </div>
+
+    <!-- Section Profil & Identité -->
+    <section class="px-5 sm:px-7 pb-6 -mt-14 text-center relative">
+      <!-- Photo de profil circulaire avec sélecteur discret -->
+      <div class="relative inline-block mx-auto mb-3 group">
+        <div class="w-28 h-28 sm:w-32 sm:h-32 rounded-full avatar-ring shadow-xl mx-auto">
+          <div class="w-full h-full rounded-full overflow-hidden bg-slate-800 relative">
+            <img
+              id="profilePhoto"
+              src="me.jpg"
+              alt="Portrait de Brijo BIKONDI"
+              onerror="this.onerror=null; this.src='https://placehold.co/300x300/1E293B/F59E0B?text=BB';"
+              class="w-full h-full object-cover object-top"
+            />
+          </div>
+        </div>
+        <!-- Bouton discret pour importer/changer sa photo en local -->
+        <label
+          for="photoInput"
+          title="Changer la photo de profil"
+          class="absolute bottom-0.5 right-0.5 w-9 h-9 rounded-full bg-amber-500 hover:bg-amber-400 text-slate-950 flex items-center justify-center shadow-lg cursor-pointer transition border-2 border-slate-900"
+        >
+          <i class="fa-solid fa-camera text-xs"></i>
+          <input type="file" id="photoInput" accept="image/*" class="hidden" />
+        </label>
+      </div>
+
+      <!-- Nom & Titre -->
+      <h1 class="font-display text-2xl sm:text-[26px] font-extrabold tracking-tight text-white">
+        Brijo BIKONDI
+      </h1>
+      <p class="mt-1 text-sm sm:text-[15px] font-semibold text-amber-400 leading-snug">
+        Consultant en Stratégie Marketing Digital &amp; Communication Digitale
+      </p>
+
+      <!-- Localisation -->
+      <div class="mt-2.5 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-800/90 border border-white/10 text-xs text-slate-300">
+        <i class="fa-solid fa-location-dot text-amber-400"></i>
+        <span>Pointe-Noire, République du Congo</span>
+      </div>
+
+      <!-- Accroche professionnelle -->
+      <p class="mt-4 text-xs sm:text-sm text-slate-300/95 bg-slate-800/50 border border-white/5 rounded-2xl p-3.5 leading-relaxed italic">
+        « Passer d'une communication réactive à une stratégie digitale structurée et orientée résultats. »
+      </p>
+
+      <!-- Boutons d'action principaux (WhatsApp Business + Enregistrer Contact .vcf) -->
+      <div class="mt-5 grid grid-cols-1 gap-2.5">
+        <a
+          href="https://wa.me/242068202822?text=Bonjour%20Brijo%2C%20j%27ai%20consult%C3%A9%20votre%20carte%20de%20visite%20num%C3%A9rique%20et%20je%20souhaite%20%C3%A9changer%20avec%20vous."
+          target="_blank"
+          rel="noopener noreferrer"
+          class="w-full py-3.5 px-4 rounded-2xl bg-emerald-500 hover:bg-emerald-400 active:scale-[0.99] text-slate-950 font-bold text-sm sm:text-[15px] flex items-center justify-center gap-2.5 shadow-lg shadow-emerald-500/20 transition"
+        >
+          <i class="fa-brands fa-whatsapp text-xl"></i>
+          <span>Discuter sur WhatsApp Business</span>
+        </a>
+
+        <button
+          type="button"
+          id="downloadVcfBtn"
+          class="w-full py-3 px-4 rounded-2xl bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/40 text-amber-300 font-semibold text-sm flex items-center justify-center gap-2 transition cursor-pointer"
+        >
+          <i class="fa-solid fa-address-card"></i>
+          <span>Enregistrer le contact (.vcf)</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Séparateur -->
+    <div class="border-t border-white/10 mx-5"></div>
+
+    <!-- Section Coordonnées Téléphoniques Directes -->
+    <section class="px-5 sm:px-7 py-5">
+      <h2 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3 flex items-center gap-2">
+        <i class="fa-solid fa-phone text-amber-400"></i>
+        <span>Appels directs &amp; WhatsApp</span>
+      </h2>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+        <!-- Numéro 1 -->
+        <a
+          href="tel:+242068202822"
+          class="link-tile rounded-2xl p-3 flex items-center gap-3 group"
+        >
+          <div class="w-10 h-10 rounded-xl bg-emerald-500/15 text-emerald-400 flex items-center justify-center shrink-0 group-hover:bg-emerald-500 group-hover:text-slate-950 transition">
+            <i class="fa-solid fa-phone-volume"></i>
+          </div>
+          <div class="text-left min-w-0">
+            <span class="block text-[11px] text-slate-400">Ligne Principale / WA</span>
+            <span class="block text-sm font-bold text-white truncate">+242 06 820 28 22</span>
+          </div>
+        </a>
+
+        <!-- Numéro 2 -->
+        <a
+          href="tel:+242044190188"
+          class="link-tile rounded-2xl p-3 flex items-center gap-3 group"
+        >
+          <div class="w-10 h-10 rounded-xl bg-amber-500/15 text-amber-400 flex items-center justify-center shrink-0 group-hover:bg-amber-500 group-hover:text-slate-950 transition">
+            <i class="fa-solid fa-mobile-screen-button"></i>
+          </div>
+          <div class="text-left min-w-0">
+            <span class="block text-[11px] text-slate-400">Ligne Secondaire</span>
+            <span class="block text-sm font-bold text-white truncate">+242 04 419 01 88</span>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- Section Réseaux Sociaux & Écosystème Digital -->
+    <section class="px-5 sm:px-7 pb-5">
+      <h2 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3 flex items-center gap-2">
+        <i class="fa-solid fa-globe text-amber-400"></i>
+        <span>Réseaux &amp; Plateformes</span>
+      </h2>
+
+      <div class="space-y-2.5">
+        <!-- LinkedIn Personnel -->
+        <a
+          href="https://www.linkedin.com/in/brijo-bikondi-314a6096?utm_source=share_via&utm_content=profile&utm_medium=member_android"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="link-tile rounded-2xl p-3.5 flex items-center justify-between group"
+        >
+          <div class="flex items-center gap-3.5 min-w-0">
+            <div class="w-10 h-10 rounded-xl bg-sky-500/15 text-sky-400 flex items-center justify-center shrink-0 text-lg">
+              <i class="fa-brands fa-linkedin-in"></i>
+            </div>
+            <div class="min-w-0">
+              <p class="text-sm font-bold text-white truncate">Profil LinkedIn — Brijo BIKONDI</p>
+              <p class="text-xs text-slate-400 truncate">Réseau professionnel &amp; publications stratégiques</p>
+            </div>
+          </div>
+          <i class="fa-solid fa-arrow-up-right-from-square text-xs text-slate-400 group-hover:text-amber-400 transition ml-2"></i>
+        </a>
+
+        <!-- LinkedIn Entreprise / Projet Sossa Kissalu -->
+        <a
+          href="https://www.linkedin.com/company/sossa-kissalu/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="link-tile rounded-2xl p-3.5 flex items-center justify-between group"
+        >
+          <div class="flex items-center gap-3.5 min-w-0">
+            <div class="w-10 h-10 rounded-xl bg-amber-500/15 text-amber-400 flex items-center justify-center shrink-0 text-lg">
+              <i class="fa-solid fa-building"></i>
+            </div>
+            <div class="min-w-0">
+              <p class="text-sm font-bold text-white truncate">Sossa Kissalu — Page LinkedIn</p>
+              <p class="text-xs text-slate-400 truncate">Communauté 13K+ abonnés &amp; Employabilité</p>
+            </div>
+          </div>
+          <i class="fa-solid fa-arrow-up-right-from-square text-xs text-slate-400 group-hover:text-amber-400 transition ml-2"></i>
+        </a>
+
+        <!-- Page Facebook Officielle -->
+        <a
+          href="https://www.facebook.com/share/18vSi1KWfs/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="link-tile rounded-2xl p-3.5 flex items-center justify-between group"
+        >
+          <div class="flex items-center gap-3.5 min-w-0">
+            <div class="w-10 h-10 rounded-xl bg-blue-500/15 text-blue-400 flex items-center justify-center shrink-0 text-lg">
+              <i class="fa-brands fa-facebook-f"></i>
+            </div>
+            <div class="min-w-0">
+              <p class="text-sm font-bold text-white truncate">Page Facebook Officielle</p>
+              <p class="text-xs text-slate-400 truncate">Actualités, conseils &amp; campagnes digitales</p>
+            </div>
+          </div>
+          <i class="fa-solid fa-arrow-up-right-from-square text-xs text-slate-400 group-hover:text-amber-400 transition ml-2"></i>
+        </a>
+
+        <!-- Lien secondaire WhatsApp Business -->
+        <a
+          href="https://www.whatsapp.com/business/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="link-tile rounded-2xl p-3.5 flex items-center justify-between group"
+        >
+          <div class="flex items-center gap-3.5 min-w-0">
+            <div class="w-10 h-10 rounded-xl bg-emerald-500/15 text-emerald-400 flex items-center justify-center shrink-0 text-lg">
+              <i class="fa-brands fa-whatsapp"></i>
+            </div>
+            <div class="min-w-0">
+              <p class="text-sm font-bold text-white truncate">Espace WhatsApp Business</p>
+              <p class="text-xs text-slate-400 truncate">Solutions messagerie &amp; relation client</p>
+            </div>
+          </div>
+          <i class="fa-solid fa-arrow-up-right-from-square text-xs text-slate-400 group-hover:text-amber-400 transition ml-2"></i>
+        </a>
+      </div>
+    </section>
+
+    <!-- Section 4 Domaines d'Expertise -->
+    <section class="px-5 sm:px-7 pb-6">
+      <div class="rounded-2xl bg-slate-900/90 border border-white/10 p-4">
+        <h2 class="text-xs font-bold uppercase tracking-wider text-amber-400 mb-3 flex items-center gap-2">
+          <i class="fa-solid fa-layer-group"></i>
+          <span>Domaines d'Expertise Clés</span>
+        </h2>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+          <div class="p-2.5 rounded-xl bg-slate-800/80 border border-white/5 flex items-start gap-2">
+            <i class="fa-solid fa-chess-knight text-amber-400 mt-0.5"></i>
+            <span class="text-slate-200 font-medium">Stratégie Marketing Digital</span>
+          </div>
+          <div class="p-2.5 rounded-xl bg-slate-800/80 border border-white/5 flex items-start gap-2">
+            <i class="fa-solid fa-user-tie text-emerald-400 mt-0.5"></i>
+            <span class="text-slate-200 font-medium">Personal Branding &amp; Comm. Institutionnelle</span>
+          </div>
+          <div class="p-2.5 rounded-xl bg-slate-800/80 border border-white/5 flex items-start gap-2">
+            <i class="fa-solid fa-users text-amber-400 mt-0.5"></i>
+            <span class="text-slate-200 font-medium">Community &amp; Growth</span>
+          </div>
+          <div class="p-2.5 rounded-xl bg-slate-800/80 border border-white/5 flex items-start gap-2">
+            <i class="fa-solid fa-chalkboard-user text-emerald-400 mt-0.5"></i>
+            <span class="text-slate-200 font-medium">Formation &amp; Ateliers</span>
+          </div>
+        </div>
+
+        <!-- Bouton Réserver un entretien exploratoire (30 min) -->
+        <a
+          href="https://wa.me/242068202822?text=Bonjour%20Brijo%2C%20je%20souhaite%20r%C3%A9server%20un%20entretien%20exploratoire%20de%2030%20minutes%20pour%20discuter%20de%20ma%20strat%C3%A9gie%20digitale."
+          target="_blank"
+          rel="noopener noreferrer"
+          class="mt-4 w-full py-3 px-4 rounded-xl bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-slate-950 font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition"
+        >
+          <i class="fa-regular fa-calendar-check text-base"></i>
+          <span>Réserver un entretien exploratoire (30 min)</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- Pied de carte -->
+    <footer class="px-5 py-3.5 bg-slate-950/70 border-t border-white/5 text-center text-[11px] text-slate-400">
+      © <span id="currentYear"></span> Brijo BIKONDI • Pointe-Noire, République du Congo
+    </footer>
+  </main>
+
+  <!-- Modale Partage & QR Code -->
+  <div
+    id="qrModal"
+    class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/80 backdrop-blur-sm p-4"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="qrModalTitle"
+  >
+    <div class="w-full max-w-sm rounded-3xl bg-slate-900 border border-white/15 p-6 text-center shadow-2xl relative">
+      <button
+        type="button"
+        id="closeQrBtn"
+        aria-label="Fermer la fenêtre QR Code"
+        class="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center transition cursor-pointer"
+      >
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="inline-flex items-center justify-center w-11 h-11 rounded-2xl bg-amber-500/15 text-amber-400 mb-3">
+        <i class="fa-solid fa-qrcode text-xl"></i>
+      </div>
+      <h3 id="qrModalTitle" class="font-display text-lg font-bold text-white">
+        Partager ma carte digitale
+      </h3>
+      <p class="text-xs text-slate-400 mt-1">
+        Scannez ce QR code pour accéder directement à mes coordonnées et réseaux.
+      </p>
+
+      <!-- Conteneur QR Code -->
+      <div class="mt-4 p-4 bg-white rounded-2xl inline-block shadow-inner">
+        <img
+          id="qrCodeImg"
+          src=""
+          alt="QR Code de la carte de visite de Brijo BIKONDI"
+          class="w-44 h-44 mx-auto block"
+        />
+      </div>
+
+      <!-- URL affichée & bouton Copier le lien -->
+      <div class="mt-4">
+        <input
+          type="text"
+          id="shareUrlInput"
+          readonly
+          class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-white/10 text-xs text-slate-300 text-center mb-2.5 focus:outline-none"
+        />
+        <button
+          type="button"
+          id="copyLinkBtn"
+          class="w-full py-3 px-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-sm flex items-center justify-center gap-2 transition cursor-pointer"
+        >
+          <i class="fa-regular fa-copy"></i>
+          <span id="copyLinkText">Copier le lien</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast de notification discret -->
+  <div
+    id="toastNotification"
+    class="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 px-4 py-2.5 rounded-full bg-slate-900 border border-emerald-500/40 text-emerald-300 text-xs font-semibold shadow-xl opacity-0 pointer-events-none transition-opacity duration-300 flex items-center gap-2"
+  >
+    <i class="fa-solid fa-circle-check text-emerald-400"></i>
+    <span id="toastMessage">Action effectuée</span>
+  </div>
+
+  <!-- Scripts d'interactivité -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Année dynamique
+      document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+      // Fonction d'affichage des notifications toast (remplace alert)
+      const toastEl = document.getElementById('toastNotification');
+      const toastMsgEl = document.getElementById('toastMessage');
+      let toastTimeout;
+
+      function showToast(message) {
+        toastMsgEl.textContent = message;
+        toastEl.classList.remove('opacity-0');
+        toastEl.classList.add('opacity-100');
+        clearTimeout(toastTimeout);
+        toastTimeout = setTimeout(() => {
+          toastEl.classList.remove('opacity-100');
+          toastEl.classList.add('opacity-0');
+        }, 3000);
+      }
+
+      // 1. Importateur local de photo portrait + sauvegarde dans localStorage
+      const photoInput = document.getElementById('photoInput');
+      const profilePhoto = document.getElementById('profilePhoto');
+
+      try {
+        const savedPhoto = localStorage.getItem('brijo_vcard_photo');
+        if (savedPhoto) {
+          profilePhoto.src = savedPhoto;
+        }
+      } catch (e) {
+        // Ignorer si localStorage est restreint
+      }
+
+      photoInput.addEventListener('change', (event) => {
+        const file = event.target.files && event.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          profilePhoto.src = e.target.result;
+          try {
+            localStorage.setItem('brijo_vcard_photo', e.target.result);
+          } catch (err) {
+            // Ignorer si l'image dépasse le quota localStorage
+          }
+          showToast('Photo de profil mise à jour !');
+        };
+        reader.readAsDataURL(file);
+      });
+
+      // 2. Génération et téléchargement automatique du fichier vCard (.vcf)
+      const downloadVcfBtn = document.getElementById('downloadVcfBtn');
+      downloadVcfBtn.addEventListener('click', () => {
+        const vcardLines = [
+          'BEGIN:VCARD',
+          'VERSION:3.0',
+          'N:BIKONDI;Brijo;;;',
+          'FN:Brijo BIKONDI',
+          'TITLE:Consultant en Stratégie Marketing Digital & Communication Digitale',
+          'ORG:Brijo BIKONDI Conseil / Sossa Kissalu',
+          'TEL;TYPE=CELL,VOICE,WHATSAPP:+242068202822',
+          'TEL;TYPE=CELL,VOICE:+242044190188',
+          'ADR;TYPE=WORK:;;Pointe-Noire;Pointe-Noire;;Republique du Congo',
+          'URL;TYPE=WhatsApp:https://wa.me/242068202822',
+          'URL;TYPE=LinkedIn:https://www.linkedin.com/in/brijo-bikondi-314a6096',
+          'URL;TYPE=SossaKissalu:https://www.linkedin.com/company/sossa-kissalu/',
+          'URL;TYPE=Facebook:https://www.facebook.com/share/18vSi1KWfs/',
+          'NOTE:Passer d\'une communication reactive a une strategie digitale structuree et orientee resultats.',
+          'END:VCARD'
+        ];
+
+        const vcfContent = vcardLines.join('\r\n');
+        const blob = new Blob([vcfContent], { type: 'text/vcard;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+
+        const tempLink = document.createElement('a');
+        tempLink.href = url;
+        tempLink.download = 'Brijo_BIKONDI_Contact.vcf';
+        document.body.appendChild(tempLink);
+        tempLink.click();
+        document.body.removeChild(tempLink);
+        URL.revokeObjectURL(url);
+
+        showToast('Fiche contact (.vcf) téléchargée !');
+      });
+
+      // 3. Modale Partage & QR Code dynamique
+      const qrModal = document.getElementById('qrModal');
+      const openQrBtn = document.getElementById('openQrBtn');
+      const closeQrBtn = document.getElementById('closeQrBtn');
+      const qrCodeImg = document.getElementById('qrCodeImg');
+      const shareUrlInput = document.getElementById('shareUrlInput');
+      const copyLinkBtn = document.getElementById('copyLinkBtn');
+      const copyLinkText = document.getElementById('copyLinkText');
+
+      openQrBtn.addEventListener('click', () => {
+        // Utilise l'URL hébergée actuelle ou le lien WhatsApp Business par défaut si ouvert en fichier local
+        const currentUrl = window.location.href.startsWith('http')
+          ? window.location.href
+          : 'https://wa.me/242068202822';
+
+        shareUrlInput.value = currentUrl;
+        qrCodeImg.src =
+          'https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=6&data=' +
+          encodeURIComponent(currentUrl);
+
+        qrModal.classList.remove('hidden');
+        qrModal.classList.add('flex');
+      });
+
+      function closeQrModal() {
+        qrModal.classList.add('hidden');
+        qrModal.classList.remove('flex');
+      }
+
+      closeQrBtn.addEventListener('click', closeQrModal);
+      qrModal.addEventListener('click', (e) => {
+        if (e.target === qrModal) closeQrModal();
+      });
+
+      // Copie fiable du lien (compatible iframe et mobile)
+      copyLinkBtn.addEventListener('click', () => {
+        shareUrlInput.select();
+        shareUrlInput.setSelectionRange(0, 99999);
+        try {
+          document.execCommand('copy');
+          copyLinkText.textContent = 'Lien copié !';
+          showToast('Lien copié dans le presse-papiers !');
+          setTimeout(() => {
+            copyLinkText.textContent = 'Copier le lien';
+          }, 2500);
+        } catch (err) {
+          showToast('Sélectionnez le lien ci-dessus pour le copier.');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
